@@ -61,8 +61,8 @@ public class Day04 {
             passports.add(newPassport);
         }
 
-        int validPasswords = 0;
-        int validPasswords2 = 0;
+        int validPassports = 0;
+        int validPassports2 = 0;
         for (HashMap<String,String> passport : passports) {
             boolean valid = true;
             boolean valid2 = true;
@@ -71,23 +71,23 @@ public class Day04 {
                 valid = valid && containsKey;
                 valid2 = valid2 && valid && validateValue(key, passport.get(key));
             }
-            validPasswords = valid ? validPasswords + 1 : validPasswords;
-            validPasswords2 = valid2 ? validPasswords2 + 1 : validPasswords2;
+            validPassports = valid ? validPassports + 1 : validPassports;
+            validPassports2 = valid2 ? validPassports2 + 1 : validPassports2;
         }
 
-        System.out.println(">>> [part 1] validPasswords: " + validPasswords);
-        System.out.println(">>> [part 2] validPasswords2: " + validPasswords2);
+        System.out.println(">>> [part 1] valid passport: " + validPassports);
+        System.out.println(">>> [part 2] valid passport: " + validPassports2);
     }
 
     private static boolean validateValue(String key, String value) {
 
         switch (key) {
             case "byr":
-                return validateNumber(value, 4, 1920, 2002);
+                return validateNumber(value, 1920, 2002);
             case "iyr":
-                return validateNumber(value, 4, 2010, 2020);
+                return validateNumber(value, 2010, 2020);
             case "eyr":
-                return validateNumber(value, 4, 2020, 2030);
+                return validateNumber(value, 2020, 2030);
             case "hgt":
                 {
                     String unit = value.substring(value.length()-2);
@@ -120,10 +120,10 @@ public class Day04 {
         return false;
     }
 
-    private static boolean validateNumber(String value, int length, int min, int max) {
+    private static boolean validateNumber(String value, int min, int max) {
         try {
             int iValue = Integer.valueOf(value);
-            if (value.length() == length && iValue >= min && iValue <= max) {
+            if (value.length() == iValue >= min && iValue <= max) {
                 return true;
             } else {
                 return false;
