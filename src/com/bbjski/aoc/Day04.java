@@ -123,7 +123,7 @@ public class Day04 {
     private static boolean validateNumber(String value, int min, int max) {
         try {
             int iValue = Integer.valueOf(value);
-            if (value.length() == iValue >= min && iValue <= max) {
+            if (iValue >= min && iValue <= max) {
                 return true;
             } else {
                 return false;
