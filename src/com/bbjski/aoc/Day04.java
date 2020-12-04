@@ -75,8 +75,8 @@ public class Day04 {
             validPassports2 = valid2 ? validPassports2 + 1 : validPassports2;
         }
 
-        System.out.println(">>> [part 1] valid passport: " + validPassports);
-        System.out.println(">>> [part 2] valid passport: " + validPassports2);
+        System.out.println(">>> [part 1] valid passports: " + validPassports);
+        System.out.println(">>> [part 2] valid passports: " + validPassports2);
     }
 
     private static boolean validateValue(String key, String value) {
