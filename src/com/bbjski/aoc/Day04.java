@@ -4,10 +4,33 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Day04 {
+
+    private static Pattern pattern = Pattern.compile("^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$");
+
+    private static ArrayList<String> colors = new ArrayList<>();
+
+    static {
+        colors.add("amb");
+        colors.add("blu");
+        colors.add("brn");
+        colors.add("gry");
+        colors.add("grn");
+        colors.add("hzl");
+        colors.add("oth");
+    }
+
+    private static String[] mandatoryKeys = new String[] {
+      "byr",
+      "iyr",
+      "eyr",
+      "hgt",
+      "hcl",
+      "ecl",
+      "pid"
+    };
 
     public static void main(String[] args) {
 
@@ -38,16 +61,6 @@ public class Day04 {
             passports.add(newPassport);
         }
 
-        String[] mandatoryKeys = new String[] {
-          "byr",
-          "iyr",
-          "eyr",
-          "hgt",
-          "hcl",
-          "ecl",
-          "pid"
-        };
-
         int validPasswords = 0;
         int validPasswords2 = 0;
         for (HashMap<String,String> passport : passports) {
@@ -67,36 +80,14 @@ public class Day04 {
     }
 
     private static boolean validateValue(String key, String value) {
-        boolean valid = false;
 
         switch (key) {
             case "byr":
-                {
-                    int iValue = Integer.valueOf(value);
-                    if (value.length() == 4 && iValue >= 1920 && iValue <= 2002) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
+                return validateNumber(value, 4, 1920, 2002);
             case "iyr":
-                {
-                    int iValue = Integer.valueOf(value);
-                    if (value.length() == 4 && iValue >= 2010 && iValue <= 2020) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
+                return validateNumber(value, 4, 2010, 2020);
             case "eyr":
-                {
-                    int iValue = Integer.valueOf(value);
-                    if (value.length() == 4 && iValue >= 2020 && iValue <= 2030) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
+                return validateNumber(value, 4, 2020, 2030);
             case "hgt":
                 {
                     String unit = value.substring(value.length()-2);
@@ -105,41 +96,40 @@ public class Day04 {
                         return false;
                     }
 
-                    int iValue = Integer.valueOf(value.substring(0, value.length()-2));
-                    if (unit.equalsIgnoreCase("cm") && iValue >= 150 && iValue <= 193) {
-                        return true;
-                    } else if (unit.equalsIgnoreCase("in") && iValue >= 59 && iValue <= 76) {
-                        return true;
-                    } else {
+                    try {
+                        int iValue = Integer.valueOf(value.substring(0, value.length() - 2));
+                        if (unit.equalsIgnoreCase("cm") && iValue >= 150 && iValue <= 193) {
+                            return true;
+                        } else if (unit.equalsIgnoreCase("in") && iValue >= 59 && iValue <= 76) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } catch (NumberFormatException ex) {
                         return false;
                     }
                 }
             case "hcl":
-                {
-                    String hexColor = "^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$";
-                    Pattern pattern = Pattern.compile(hexColor);
-                    Matcher matcher = pattern.matcher(value);
-                    return matcher.matches();
-                }
+                return pattern.matcher(value).matches();
             case "ecl":
-                {
-                    ArrayList<String> colors = new ArrayList<>();
-                    colors.add("amb");
-                    colors.add("blu");
-                    colors.add("brn");
-                    colors.add("gry");
-                    colors.add("grn");
-                    colors.add("hzl");
-                    colors.add("oth");
-
-                    return colors.contains(value);
-                }
+                return colors.contains(value);
             case "pid":
-                {
-                    return value.length() == 9;
-                }
+                return value.length() == 9;
         }
 
-        return valid;
+        return false;
+    }
+
+    private static boolean validateNumber(String value, int length, int min, int max) {
+        try {
+            int iValue = Integer.valueOf(value);
+            if (value.length() == length && iValue >= min && iValue <= max) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NumberFormatException ex) {
+            return false;
+        }
     }
 }
