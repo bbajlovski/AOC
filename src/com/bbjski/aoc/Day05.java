@@ -35,6 +35,6 @@ public class Day05 {
         }
 
         System.out.println(">>> [part 1] max ID: " + maxId);
-        System.out.println(">>> [part 2] valid my seat ID: " + mySeatId);
+        System.out.println(">>> [part 2] my seat ID: " + mySeatId);
     }
 }
