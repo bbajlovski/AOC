@@ -11,8 +11,7 @@ public class Day07 {
         Scanner input = new Scanner(System.in);
 
         List<String> colorsContainGold = new ArrayList<>();
-        HashMap<String, HashMap<String, Integer>> rules = new HashMap<String, HashMap<String, Integer>>();
-        int rowCount = 1;
+        HashMap<String, HashMap<String, Integer>> rules = new HashMap<>();
         while (input.hasNextLine()){
             String line = input.nextLine();
             String[] ruleDef = line.split("bags contain");
@@ -36,7 +35,6 @@ public class Day07 {
             }
 
             rules.put(key, rule);
-            rowCount ++;
         }
 
         boolean changes = true;
