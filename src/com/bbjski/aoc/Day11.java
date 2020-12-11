@@ -2,7 +2,7 @@ package com.bbjski.aoc;
 
 import java.util.*;
 
-public class Day10 extends Thread {
+public class Day11 extends Thread {
 
     public static Long variations = 0L;
 
