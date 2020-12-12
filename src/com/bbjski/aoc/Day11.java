@@ -4,87 +4,298 @@ import java.util.*;
 
 public class Day11 extends Thread {
 
-    public static Long variations = 0L;
-
-    private static ArrayList<Integer> sortedAdapters = new ArrayList<>();
-
-    private static HashMap<Integer, Long> memo = new HashMap<>();
-
     public static void main(String[] args) throws Exception {
 
-        System.out.println(">>> Enter adapters:");
+        System.out.println(">>> Enter seats:");
 
         Scanner input = new Scanner(System.in);
 
-        ArrayList<Integer> adapters = new ArrayList<>();
+        ArrayList<String> lines = new ArrayList<>();
 
-
-        Integer min = -1;
-        Integer max = -1;
+        int nRows = 0;
         while (input.hasNextLine()){
-            Integer value = Integer.valueOf(input.nextLine());
-            adapters.add(value);
-            sortedAdapters.add(value);
-            min = min == -1 || min > value ? value : min;
-            max = max == -1 || max < value ? value : max;
-
+            String line = input.nextLine();
+            lines.add(line);
+            nRows++;
         }
-        int jolt1Count = min - 0 == 1 ? 1 : 0;
-        int jolt3Count = min - 0 == 3 ? 1 : 0;
+        int nCols = lines.get(0).length();
 
-        int nextValue = min;
-        adapters.remove(adapters.indexOf(nextValue));
-        while (adapters.size() > 0) {
+        char[][] seats = new char[nRows][];
 
-            if (adapters.contains(Integer.valueOf(nextValue+1))) {
-                nextValue += 1;
-                adapters.remove(adapters.indexOf(nextValue));
-                jolt1Count++;
-            } else if (adapters.contains(Integer.valueOf(nextValue+2))) {
-                adapters.remove(adapters.indexOf(nextValue));
-                nextValue += 2;
-            } else if (adapters.contains(Integer.valueOf(nextValue+3))) {
-                nextValue += 3;
-                adapters.remove(adapters.indexOf(nextValue));
-                jolt3Count ++;
-            } else {
-                throw new Exception("No available adapter for the chain");
-            }
-
+        for (int row = 0; row < nRows; row++) {
+            seats[row] = lines.get(row).toCharArray();
         }
-        jolt3Count++;
 
-        sortedAdapters.add(0);
-        sortedAdapters.add(max + 3);
-        Collections.sort(sortedAdapters);
+        char[][] oldSeats = null;
+        char[][] changedSeats = cloneArray(seats);
 
-        Long start = Calendar.getInstance().getTimeInMillis();
-        variations = countVariations(0);
-        Long end = Calendar.getInstance().getTimeInMillis();
+        int rulesCounter = 0;
+        while (!equalArrays(oldSeats, changedSeats)) {
+            oldSeats = cloneArray(changedSeats);
+            changedSeats = applyRules1(changedSeats);
+            rulesCounter++;
+        }
 
+        int occupied = countSeats(changedSeats, '#');
 
-        System.out.println(">>> [part 1] product: " + jolt1Count * jolt3Count);
-        System.out.println(">>> [part 2] variations: " + variations + ", in " + (end - start) + "ms");
+        oldSeats = null;
+        changedSeats = cloneArray(seats);
+
+        rulesCounter = 0;
+        while (!equalArrays(oldSeats, changedSeats)) {
+            oldSeats = cloneArray(changedSeats);
+            changedSeats = applyRules2(changedSeats);
+            rulesCounter++;
+        }
+
+        int occupied2 = countSeats(changedSeats, '#');
+
+        System.out.println(">>> [part 1] occupied: " + occupied);
+        System.out.println(">>> [part 2] occupied: " + occupied2);
     }
 
-    private static long countVariations(int key) {
+    private static char[][] applyRules1(char[][] seats) {
+        char[][] changedSeats = cloneArray(seats);
 
-        if (key == sortedAdapters.size() -1){
-            return 1;
-        }
+        for(int rows = 0; rows < changedSeats.length; rows++) {
+            for(int cols = 0; cols < changedSeats[rows].length; cols++) {
+                switch (seats[rows][cols]) {
+                    case 'L': {
+                            boolean eligible = true;
+                            if (rows > 0) {
+                                if (cols > 0) {
+                                    eligible = eligible && (seats[rows - 1][cols - 1] == 'L' || seats[rows - 1][cols - 1] == '.');
+                                }
 
-        if (memo.containsKey(key)) {
-            return memo.get(key);
-        }
+                                eligible = eligible && (seats[rows - 1][cols] == 'L' || seats[rows - 1][cols] == '.');
 
-        Long result = 0L;
-        for (int index = key + 1; index < sortedAdapters.size(); index++) {
-            if (sortedAdapters.get(index) - sortedAdapters.get(key) <=3) {
-                result += countVariations(index);
+                                if (cols < seats[rows].length-1) {
+                                    eligible = eligible && (seats[rows - 1][cols + 1] == 'L' || seats[rows - 1][cols + 1] == '.');
+                                }
+                            }
+                            {
+                                if (cols > 0) {
+                                    eligible = eligible && (seats[rows][cols - 1] == 'L' || seats[rows][cols - 1] == '.');
+                                }
+                                if (cols < seats[rows].length-1) {
+                                    eligible = eligible && (seats[rows][cols + 1] == 'L' || seats[rows][cols + 1] == '.');
+                                }
+                            }
+                            if (rows < seats.length-1) {
+                                if (cols > 0) {
+                                    eligible = eligible && (seats[rows + 1][cols - 1] == 'L' || seats[rows + 1][cols - 1] == '.');
+                                }
+
+                                eligible = eligible && (seats[rows + 1][cols] == 'L' || seats[rows + 1][cols] == '.');
+
+                                if (cols < seats[rows].length-1) {
+                                    eligible = eligible && (seats[rows + 1][cols + 1] == 'L' || seats[rows + 1][cols + 1] == '.');
+                                }
+                            }
+
+                            if (eligible) {
+                                changedSeats[rows][cols] = '#';
+                            }
+                        }
+                        break;
+                    case '#':{
+                            int countEligible = 0;
+                            if (rows > 0) {
+                                if (cols > 0 && seats[rows - 1][cols - 1] == '#') {
+                                    countEligible++;
+                                }
+
+                                if (seats[rows - 1][cols] == '#') {
+                                    countEligible++;
+                                }
+
+                                if (cols < seats[rows].length-1 && seats[rows - 1][cols + 1] == '#') {
+                                    countEligible++;
+                                }
+                            }
+
+                            {
+                                if (cols > 0 && seats[rows][cols - 1] == '#'){
+                                    countEligible++;
+                                }
+                                if (cols < seats[rows].length-1 && seats[rows][cols + 1] == '#') {
+                                    countEligible++;
+                                }
+                            }
+
+                            if (rows < seats.length-1) {
+                                if (cols > 0 && seats[rows + 1][cols - 1] == '#') {
+                                    countEligible++;
+                                }
+
+                                if (seats[rows + 1][cols] == '#') {
+                                    countEligible++;
+                                }
+
+                                if (cols < seats[rows].length-1 && seats[rows + 1][cols + 1] == '#') {
+                                    countEligible++;
+                                }
+                            }
+
+                            if (countEligible >= 4) {
+                                changedSeats[rows][cols] = 'L';
+                            }
+                        }
+                        break;
+                    case '.':
+                    default:
+                        break;
+                }
             }
         }
-        memo.put(key, result);
 
-        return result;
+        return changedSeats;
+    }
+
+    private static char[][] applyRules2(char[][] seats) {
+        char[][] changedSeats = cloneArray(seats);
+
+        for(int rows = 0; rows < changedSeats.length; rows++) {
+            for(int cols = 0; cols < changedSeats[rows].length; cols++) {
+                switch (seats[rows][cols]) {
+                    case 'L': {
+                        boolean eligible = true;
+                        for (int direction = 1; direction <= 8; direction++) {
+                            eligible = eligible && (neighbourSeat(seats, rows, cols, direction)=='L' ||  neighbourSeat(seats, rows, cols, direction)=='.');
+                        }
+
+                        if (eligible) {
+                            changedSeats[rows][cols] = '#';
+                        }
+                    }
+                    break;
+                    case '#':{
+                        int countEligible = 0;
+                        for (int direction = 1; direction <= 8; direction++) {
+                            countEligible += neighbourSeat(seats, rows, cols, direction)=='#' ? 1 : 0;
+                        }
+
+                        if (countEligible >= 5) {
+                            changedSeats[rows][cols] = 'L';
+                        }
+                    }
+                    break;
+                    case '.':
+                    default:
+                        break;
+                }
+            }
+        }
+
+        return changedSeats;
+    }
+
+    private static char[][] cloneArray(char[][] original) {
+        char[][] clone = new char[original.length][original[0].length];
+
+        for(int rows = 0; rows < original.length; rows++) {
+            for(int cols = 0; cols < original[rows].length; cols++) {
+                clone[rows][cols] = original[rows][cols];
+            }
+        }
+
+        return clone;
+    }
+
+    private static boolean equalArrays(char[][] array1, char[][] array2) {
+        boolean equal = array1 != null && array2 != null;
+
+        equal = equal && array1.length == array2.length;
+
+        for(int rows = 0; equal && rows < array1.length; rows++) {
+            equal = equal && array1[rows].length == array2[rows].length;
+            for(int cols = 0; equal && cols < array1[rows].length; cols++) {
+                equal = equal && array1[rows][cols] == array2[rows][cols];
+            }
+        }
+
+        return equal;
+    }
+
+    private static int countSeats(char[][] seats, char seatType) {
+        int count = 0;
+        for(int rows = 0; rows < seats.length; rows++) {
+            for(int cols = 0; cols < seats[rows].length; cols++) {
+                count += seats[rows][cols] == seatType ? 1 : 0;
+            }
+        }
+
+        return count;
+    }
+
+    /*
+     * Directions:
+     *   1 - 2 - 3
+     *   4 - x - 5
+     *   6 - 7 - 8
+     */
+    private static char neighbourSeat(char[][] seats, int row, int col, int direction) {
+        char seat = '.';
+
+        switch (direction) {
+            case 1:
+                while (seat == '.' && row > 0 && col > 0) {
+                    row--;
+                    col--;
+                    seat = seats[row][col];
+                }
+                break;
+            case 2:
+                while (seat == '.' && row > 0) {
+                    row--;
+                    seat = seats[row][col];
+                }
+                break;
+            case 3:
+                while (seat == '.' && row > 0 && col < seats[row].length - 1) {
+                    row--;
+                    col++;
+                    seat = seats[row][col];
+                }
+                break;
+            case 4:
+                while (seat == '.' && col > 0) {
+                    col--;
+                    seat = seats[row][col];
+                }
+                break;
+            case 5:
+                while (seat == '.' && col < seats[row].length - 1) {
+                    col++;
+                    seat = seats[row][col];
+                }
+                break;
+            case 6:
+                while (seat == '.' && row < seats.length - 1 && col > 0) {
+                    row++;
+                    col--;
+                    seat = seats[row][col];
+                }
+                break;
+            case 7:
+                while (seat == '.' && row < seats.length - 1) {
+                    row++;
+                    seat = seats[row][col];
+                }
+                break;
+            case 8:
+                while (seat == '.' && row < seats.length - 1 && col < seats[row].length - 1) {
+                    row++;
+                    col++;
+                    seat = seats[row][col];
+                }
+                break;
+            default:
+                break;
+        }
+
+        return seat;
     }
 }
+
+
