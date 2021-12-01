@@ -1,4 +1,4 @@
-package com.bbjski.aoc;
+package com.bbjski.aoc.y2020;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -20,15 +20,15 @@ public class Day02 {
 
         int validCounter = 0;
         int validCounter2 = 0;
-        for (int index1 = 0; index1 < passwords.length; index1 ++) {
-            int min = Integer.valueOf(passwords[index1].substring(0,passwords[index1].indexOf("-")).trim());
-            int max = Integer.valueOf(passwords[index1].substring(passwords[index1].indexOf("-")+1, passwords[index1].indexOf(" ")).trim());
-            String letter = passwords[index1].substring(passwords[index1].indexOf(" ")+1, passwords[index1].indexOf(":")).trim();
-            String password = passwords[index1].substring(passwords[index1].indexOf(":")+1).trim();
+        for (String pwd : passwords) {
+            int min = Integer.parseInt(pwd.substring(0, pwd.indexOf("-")).trim());
+            int max = Integer.parseInt(pwd.substring(pwd.indexOf("-") + 1, pwd.indexOf(" ")).trim());
+            String letter = pwd.substring(pwd.indexOf(" ") + 1, pwd.indexOf(":")).trim();
+            String password = pwd.substring(pwd.indexOf(":") + 1).trim();
 
             // part 1
             int repeatCounter = 0;
-            for (int charIdx = 0; charIdx < password.length(); charIdx ++) {
+            for (int charIdx = 0; charIdx < password.length(); charIdx++) {
                 if (password.charAt(charIdx) == letter.charAt(0)) {
                     repeatCounter++;
                 }
@@ -41,12 +41,12 @@ public class Day02 {
                 max > 0 && max <= password.length() &&
                 (
                   (
-                    password.charAt(min-1) == letter.charAt(0) &&
-                      password.charAt(max-1) != letter.charAt(0)
+                    password.charAt(min - 1) == letter.charAt(0) &&
+                      password.charAt(max - 1) != letter.charAt(0)
                   ) ||
                     (
-                      password.charAt(min-1) != letter.charAt(0) &&
-                        password.charAt(max-1) == letter.charAt(0)
+                      password.charAt(min - 1) != letter.charAt(0) &&
+                        password.charAt(max - 1) == letter.charAt(0)
                     )
                 ) ?
                 validCounter2 + 1 :

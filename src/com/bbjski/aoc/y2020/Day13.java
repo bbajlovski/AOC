@@ -1,4 +1,4 @@
-package com.bbjski.aoc;
+package com.bbjski.aoc.y2020;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -15,8 +15,8 @@ public class Day13 extends Thread {
             lines.add(input.nextLine());
         }
 
-        long timestamp = Long.valueOf(lines.get(0));
-        int tst = Integer.valueOf(String.valueOf(timestamp));
+        long timestamp = Long.parseLong(lines.get(0));
+        int tst = Integer.parseInt(String.valueOf(timestamp));
         String[] busses = lines.get(1)
           .replaceAll(",x","")
           .replaceAll("x,", "")
@@ -26,7 +26,7 @@ public class Day13 extends Thread {
         int[] busMinutes = new int[busses.length];
         int counter = 0;
         for (String line : busses) {
-            busLines[counter] = Integer.valueOf(line);
+            busLines[counter] = Integer.parseInt(line);
             busMinutes[counter] = tst % busLines[counter];
             counter++;
         }
@@ -38,7 +38,7 @@ public class Day13 extends Thread {
             if (line.equalsIgnoreCase("x")) {
                 fullBusLines[fullCounter] = 0;
             } else {
-                fullBusLines[fullCounter] = Integer.valueOf(line);
+                fullBusLines[fullCounter] = Integer.parseInt(line);
             }
             fullCounter++;
         }

@@ -1,4 +1,4 @@
-package com.bbjski.aoc;
+package com.bbjski.aoc.y2020;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,7 +97,7 @@ public class Day04 {
                     }
 
                     try {
-                        int iValue = Integer.valueOf(value.substring(0, value.length() - 2));
+                        int iValue = Integer.parseInt(value.substring(0, value.length() - 2));
                         if (unit.equalsIgnoreCase("cm") && iValue >= 150 && iValue <= 193) {
                             return true;
                         } else if (unit.equalsIgnoreCase("in") && iValue >= 59 && iValue <= 76) {
@@ -122,7 +122,7 @@ public class Day04 {
 
     private static boolean validateNumber(String value, int min, int max) {
         try {
-            int iValue = Integer.valueOf(value);
+            int iValue = Integer.parseInt(value);
             if (iValue >= min && iValue <= max) {
                 return true;
             } else {

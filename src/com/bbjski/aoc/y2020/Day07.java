@@ -1,4 +1,4 @@
-package com.bbjski.aoc;
+package com.bbjski.aoc.y2020;
 
 import java.util.*;
 
@@ -23,7 +23,7 @@ public class Day07 {
                 if (!value.trim().startsWith("no")) {
                     String trimmedValue = value.trim();
                     String bagNum = trimmedValue.substring(0, trimmedValue.indexOf(" "));
-                    int num = Integer.valueOf(bagNum);
+                    int num = Integer.parseInt(bagNum);
                     String bagColor = trimmedValue.substring(trimmedValue.indexOf(" ") + 1, trimmedValue.indexOf(" bag")).trim();
                     rule.put(bagColor, num);
                     if (bagColor.equalsIgnoreCase("shiny gold")) {

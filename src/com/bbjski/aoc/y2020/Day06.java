@@ -1,4 +1,4 @@
-package com.bbjski.aoc;
+package com.bbjski.aoc.y2020;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package com.bbjski.aoc;
+package com.bbjski.aoc.y2020;
 
 import com.bbjski.aoc.model.BoardingPass;
 
@@ -16,7 +16,7 @@ public class Day05 {
         while (input.hasNextLine()){
             String line = input.nextLine();
             BoardingPass pass = new BoardingPass(line);
-            maxId = maxId < pass.getId() ? pass.getId() : maxId;
+            maxId = Math.max(maxId, pass.getId());
 
             allPasses[pass.getRow()][pass.getColumn()] = pass;
         }

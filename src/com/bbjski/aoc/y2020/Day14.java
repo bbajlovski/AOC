@@ -1,4 +1,4 @@
-package com.bbjski.aoc;
+package com.bbjski.aoc.y2020;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +24,7 @@ public class Day14 extends Thread {
                 mask = value + "";
             } else {
                 String address = op.substring(4, op.length() - 1);
-                value = String.format("%36s", Long.toBinaryString(Integer.valueOf(value))).replace(" ", "0");
+                value = String.format("%36s", Long.toBinaryString(Integer.parseInt(value))).replace(" ", "0");
                 String valueCopy = value + "";
 
                 value = applyMask(value, mask);
@@ -56,7 +56,7 @@ public class Day14 extends Thread {
     }
 
     private static void applyMask(HashMap memory, String address, String value, String mask) {
-        String addressMasked = String.format("%36s", Long.toBinaryString(Integer.valueOf(address))).replace(" ", "0");
+        String addressMasked = String.format("%36s", Long.toBinaryString(Integer.parseInt(address))).replace(" ", "0");
 
         ArrayList<String> addresses = new ArrayList<>();
 
@@ -93,9 +93,7 @@ public class Day14 extends Thread {
                 }
             }
 
-            for (String addr : newAddresses) {
-                addresses.add(addr);
-            }
+            addresses.addAll(newAddresses);
 
             for (String addr : removeAddresses) {
                 addresses.remove(addr);

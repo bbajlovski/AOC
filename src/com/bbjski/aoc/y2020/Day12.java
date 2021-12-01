@@ -1,4 +1,4 @@
-package com.bbjski.aoc;
+package com.bbjski.aoc.y2020;
 
 import java.util.Scanner;
 
@@ -25,7 +25,7 @@ public class Day12 extends Thread {
         while (input.hasNextLine()){
             String move = input.nextLine();
             char dirMove = move.charAt(0);
-            int length = Integer.valueOf(move.substring(1));
+            int length = Integer.parseInt(move.substring(1));
 
             calculatePosition(dirMove, length);
             calculatePosition2(dirMove, length);
@@ -94,7 +94,6 @@ public class Day12 extends Thread {
                 }
                 if (direction == 'S') {
                     direction = 'E';
-                    continue;
                 }
             }
             finalProps[0] = direction;
@@ -117,7 +116,6 @@ public class Day12 extends Thread {
                 }
                 if (direction == 'N') {
                     direction = 'E';
-                    continue;
                 }
             }
             finalProps[0] = direction;

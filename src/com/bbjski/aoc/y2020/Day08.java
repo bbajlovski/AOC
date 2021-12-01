@@ -1,4 +1,4 @@
-package com.bbjski.aoc;
+package com.bbjski.aoc.y2020;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -26,7 +26,7 @@ public class Day08 {
             executed[index] = true;
             String command = commands.get(index);
             String instruction = command.split(" ")[0].trim().toLowerCase();
-            int value = Integer.valueOf(command.split(" ")[1].trim());
+            int value = Integer.parseInt(command.split(" ")[1].trim());
             switch (instruction) {
                 case "nop":
                     index++;
@@ -69,7 +69,7 @@ public class Day08 {
                         }
                     }
 
-                    int value = Integer.valueOf(command.split(" ")[1].trim());
+                    int value = Integer.parseInt(command.split(" ")[1].trim());
                     switch (instruction) {
                         case "nop":
                             index++;

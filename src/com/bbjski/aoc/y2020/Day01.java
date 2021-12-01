@@ -1,4 +1,4 @@
-package com.bbjski.aoc;
+package com.bbjski.aoc.y2020;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -6,7 +6,6 @@ import java.util.Scanner;
 public class Day01 {
 
     public static void main(String[] args) {
-
         System.out.println(">>> Enter expense report:");
 
         Scanner input = new Scanner(System.in);

@@ -1,4 +1,4 @@
-package com.bbjski.aoc;
+package com.bbjski.aoc.y2020;
 
 import java.util.*;
 
@@ -219,9 +219,9 @@ public class Day11 extends Thread {
 
     private static int countSeats(char[][] seats, char seatType) {
         int count = 0;
-        for(int rows = 0; rows < seats.length; rows++) {
-            for(int cols = 0; cols < seats[rows].length; cols++) {
-                count += seats[rows][cols] == seatType ? 1 : 0;
+        for (char[] seat : seats) {
+            for (char c : seat) {
+                count += c == seatType ? 1 : 0;
             }
         }
 

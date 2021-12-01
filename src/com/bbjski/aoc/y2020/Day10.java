@@ -1,4 +1,4 @@
-package com.bbjski.aoc;
+package com.bbjski.aoc.y2020;
 
 import java.util.*;
 
@@ -19,8 +19,8 @@ public class Day10 extends Thread {
         ArrayList<Integer> adapters = new ArrayList<>();
 
 
-        Integer min = -1;
-        Integer max = -1;
+        int min = -1;
+        int max = -1;
         while (input.hasNextLine()){
             Integer value = Integer.valueOf(input.nextLine());
             adapters.add(value);
@@ -29,21 +29,21 @@ public class Day10 extends Thread {
             max = max == -1 || max < value ? value : max;
 
         }
-        int jolt1Count = min - 0 == 1 ? 1 : 0;
-        int jolt3Count = min - 0 == 3 ? 1 : 0;
+        int jolt1Count = min == 1 ? 1 : 0;
+        int jolt3Count = min == 3 ? 1 : 0;
 
         int nextValue = min;
         adapters.remove(adapters.indexOf(nextValue));
         while (adapters.size() > 0) {
 
-            if (adapters.contains(Integer.valueOf(nextValue+1))) {
+            if (adapters.contains(nextValue + 1)) {
                 nextValue += 1;
                 adapters.remove(adapters.indexOf(nextValue));
                 jolt1Count++;
-            } else if (adapters.contains(Integer.valueOf(nextValue+2))) {
+            } else if (adapters.contains(nextValue + 2)) {
                 adapters.remove(adapters.indexOf(nextValue));
                 nextValue += 2;
-            } else if (adapters.contains(Integer.valueOf(nextValue+3))) {
+            } else if (adapters.contains(nextValue + 3)) {
                 nextValue += 3;
                 adapters.remove(adapters.indexOf(nextValue));
                 jolt3Count ++;
@@ -77,7 +77,7 @@ public class Day10 extends Thread {
             return memo.get(key);
         }
 
-        Long result = 0L;
+        long result = 0L;
         for (int index = key + 1; index < sortedAdapters.size(); index++) {
             if (sortedAdapters.get(index) - sortedAdapters.get(key) <=3) {
                 result += countVariations(index);
