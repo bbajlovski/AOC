@@ -2,10 +2,7 @@ package com.bbjski.aoc.y2021;
 
 import com.bbjski.aoc.model.Digit;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Day08 {
 
